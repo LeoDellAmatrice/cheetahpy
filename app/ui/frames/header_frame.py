@@ -1,5 +1,7 @@
-from app.assets.loader_assets import load_logo
+from app.assets.loader_assets import load_logo, load_icon
+from app.ui.settings_window import SettingsWindow
 import customtkinter as ctk
+
 
 
 class HeaderFrame(ctk.CTkFrame):
@@ -10,12 +12,15 @@ class HeaderFrame(ctk.CTkFrame):
 
         self.grid_propagate(False)
 
-        self.configure(height=75)
+        self.configure(height=68)
 
-        self.grid_columnconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=0)  # logo
+        self.grid_columnconfigure(1, weight=1)  # título (cresce)
+        self.grid_columnconfigure(2, weight=0)  # ações
         self.grid_rowconfigure(1, weight=1)
 
-        self.image = load_logo(size=(60, 60))
+        self.logo_image = load_logo(size=(60, 60))
+        self.icon_settings = load_icon("settings", size=(30, 30))
 
         self.build_frame()
 
@@ -23,7 +28,7 @@ class HeaderFrame(ctk.CTkFrame):
         # Logo
         ctk.CTkLabel(
             self,
-            image=self.image,
+            image=self.logo_image,
             text=""
         ).grid(
             row=0,
@@ -37,7 +42,7 @@ class HeaderFrame(ctk.CTkFrame):
         ctk.CTkLabel(
             self,
             text="CheetahPy",
-            font=ctk.CTkFont(size=22, weight="bold")
+            font=ctk.CTkFont(size=20, weight="bold")
         ).grid(
             row=0,
             column=1,
@@ -48,7 +53,7 @@ class HeaderFrame(ctk.CTkFrame):
         # Subtítulo
         ctk.CTkLabel(
             self,
-            text="Aprenda lógica e Python de forma prática",
+            text="Aprenda lógica de programação com Python",
             font=ctk.CTkFont(size=13),
             text_color="gray"
         ).grid(
@@ -58,4 +63,22 @@ class HeaderFrame(ctk.CTkFrame):
             pady=(0, 12)
         )
 
+        ctk.CTkButton(
+            self,
+            image=self.icon_settings,
+            text="",
+            width=30,
+            height=30,
+            corner_radius=8,
+            fg_color="transparent",
+            hover_color="#363636",
+            command=self.open_settings
+        ).grid(
+            row=0,
+            column=2,
+            rowspan=2,
+            padx=(10, 15)
+        )
 
+    def open_settings(self):
+        SettingsWindow(self.master)
